@@ -1,36 +1,23 @@
-const express = require('express')
+const path = require('path');
 
-const path = require('path')
+const express = require('express');
 
-
-const rootDir = require('../util/path')
-
-const adminData = require('./admin')
-
-
+const shopController = require('../controllers/shop');
 
 const router = express.Router();
 
-router.get('/',(req,res,next)=>{
-    //  console.log('In another Middleware')
-    //res.send('<h1>This is Home Page</h1>')
-  //  res.sendFile(path.join(__dirname,'..','views','shop.html'))
-  console.log('adminData ',adminData.products)
+router.get('/', shopController.getIndex);
 
-  //res.sendFile(path.join(rootDir,'views','shop.html'))
-  //now sending pug template engine
-  const products = adminData.products;
-  res.render('shop', {
-    prods: products,
-    pageTitle: 'Shop',
-    path: '/',
-    hasProducts: products.length > 0,
-    activeShop: true,
-    productCSS: true
-  });
+router.get('/products', shopController.getProducts);
 
-  
+router.get('/cart', shopController.getCart);
 
-})
+router.post('/cart',shopController.postCart)
+
+router.get('/orders', shopController.getOrders);
+
+router.get('/checkout', shopController.getCheckout);
+
+router.get('/products/:productId',shopController.getProduct);
 
 module.exports = router;
